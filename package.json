@@ -1,0 +1,40 @@
+{
+  "name": "c7",
+  "version": "0.0.1",
+  "description": "c7: The Configurable Committable Cross-appliCation Custom Component Creator",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run prettier && tsc",
+    "dev": "tsc && node build/index.js",
+    "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "lint": "npm run prettier",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "c7": "./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svasandani/c7.git"
+  },
+  "keywords": [
+    "open-source",
+    "components",
+    "macros",
+    "macro",
+    "infrastructure-as-code",
+    "generate"
+  ],
+  "author": "Shailesh Vasandani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svasandani/c7/issues"
+  },
+  "homepage": "https://github.com/svasandani/c7#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.5",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
+  }
+}
