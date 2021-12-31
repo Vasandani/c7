@@ -160,7 +160,7 @@ Wow! It got the paths right, and it even parsed `index.js` to figure out that we
 
 #### Adding routes, handlers, and validators to a REST endpoint
 
-**Note: `MatchCase` is a `c7` specific parameter that determines whether the exact case of custom parameters must be matched. Setting it to false allows `c7` to generate boilerplate for functions that use camelCase too (like `validateUser`).**
+**Note: `MatchCase` is a `c7` specific parameter that determines whether the exact case of custom parameters must be matched. Setting it to false allows `c7` to generate boilerplate for functions that don't use the exact case too (e.g. `validateUser`, etc.).**
 
 ```bash
 $ c7 record model --name=user --MatchCase=false
@@ -170,8 +170,8 @@ Stopped recording!
 Calculating diffs...
 
 CHANGES:
-[ADDED]       `src/handlers/${model}.js`
-[ADDED]       `src/validators/${model}.js`
+[ADDED]       `src/handlers/${name}.js`
+[ADDED]       `src/validators/${name}.js`
 [MODIFIED]    `src/routes.js`
 
 Does this look right? (Y/n) _
