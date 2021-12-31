@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/24604927/147799871-cf91b79d-253d-4668-87dd-235a6534dbe2.png" />
+  <img src="https://user-images.githubusercontent.com/24604927/147800476-f463b79b-7902-4a0d-8f5b-c088f6fc46f5.png" />
 </h1>
 <p align="center">
   c7: The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
