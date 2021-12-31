@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "c7: The Configurable Committable Cross-appliCation Custom Component Creator",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "npm run prettier && tsc",
-    "dev": "tsc && node build/index.js",
+    "dev": "tsc && cross-env C7_ENV=development node build/index.js",
     "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "npm run prettier",
     "prepare": "npm run build",
@@ -34,7 +35,11 @@
   "homepage": "https://github.com/svasandani/c7#readme",
   "devDependencies": {
     "@types/node": "^17.0.5",
+    "cross-env": "^7.0.3",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "chalk": "^5.0.0"
   }
 }
