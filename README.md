@@ -1,9 +1,10 @@
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/24604927/147800476-f463b79b-7902-4a0d-8f5b-c088f6fc46f5.png" />
+  <img height="150" src="https://user-images.githubusercontent.com/24604927/147830756-70b99a0c-9f22-436d-bc78-6cc228491b35.png" />
 </h1>
 <p align="center">
   c7: The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
 </p>
+
 
 ## Quickstart
 ### Record
@@ -178,7 +179,7 @@ Does this look right? (Y/n) _
 
 ## Params specific to `c7`
 
-|Param|Type|Default|Description|
+|Param|Type|Default|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |-----|-----|-----|-----|
 |`MatchCase`|Boolean|`true`|Determines whether to match the case of custom parameters. If false, will match any variant of every custom parameter in paths, new files, and modified files.|
 |`MatchPath`|Boolean|`true`|Determines whether to match paths of created and modified files. If false, will always use the absolute path.|
