@@ -193,6 +193,24 @@ CHANGES:
 Does this look right? (Y/n) _
 ```
 
+#### Adding boilerplate types and error handlers to a CLI
+
+```bash
+$ c7 record submodule --subfunction=config --MatchCase=false
+Watching for changes... (Press any key to end the recording.)
+Stopped recording!
+
+Calculating diffs...
+
+CHANGES:
+[ADDED]       `src/${subfunction}/functions.js`
+[ADDED]       `src/${subfunction}/errors.js`
+[ADDED]       `src/${subfunction}/types.js`
+[ADDED]       `src/${subfunction}/test.js`
+
+Does this look right? (Y/n) _
+```
+
 ## `c7` configuration parameters
 
 These can be configured either in `c7.json` or when running commands.
