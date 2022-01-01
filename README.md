@@ -193,7 +193,9 @@ CHANGES:
 Does this look right? (Y/n) _
 ```
 
-## Params specific to `c7`
+## `c7` configuration parameters
+
+These can be configured either in `c7.json` or when running commands.
 
 |Param|Type|Default|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |-----|-----|-----|-----|
@@ -212,5 +214,6 @@ Here's a list of planned and existing features:
 |**Core**|Allows for creating directories and files from specified configuration files.|`TODO`|
 |**Record**|Allows the user to record component creation.|`TODO`|
 |**Edit files**|Uses a parser or raw plaintext diff to allow for modifying existing files.|`TODO`|
+|**Plugin support**|Add support for community plugins to enhance functionality (for example presets for apps).|`TODO`|
 
 If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
