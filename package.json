@@ -1,6 +1,6 @@
 {
   "name": "c7",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "c7: The Configurable Committable Cross-appliCation Custom Component Creator",
   "main": "index.js",
   "type": "module",
@@ -8,10 +8,8 @@
     "dev": "tsc && cross-env C7_ENV=development C7_VERBOSE=true node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run prettier && tsc",
-
     "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "npm run prettier",
-
     "prepare": "npm run build",
     "release": "standard-version",
     "commit": "cz"
