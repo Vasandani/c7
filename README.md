@@ -235,3 +235,7 @@ Here's a list of planned and existing features:
 |**Plugin support**|Add support for community plugins to enhance functionality (for example presets for apps).|`TODO`|
 
 If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
+
+## Contributing
+
+See [CONTRiBUTING.md](CONTRIBUTING.md).
