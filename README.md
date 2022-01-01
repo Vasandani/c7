@@ -22,6 +22,16 @@
   The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
 </p>
 
+<h2>
+  Warning
+  <img height="24px" src="https://user-images.githubusercontent.com/24604927/147856240-1eeb42e4-b703-4ea4-802b-10aa6ee11335.png" />
+</h2>
+
+This package is in an unreleased state. DO NOT USE PRE-1.X.X VERSIONS!
+
+If you'd like to contribute, please see [CONTRIBUTING.md](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md).
+
+
 ## Quickstart
 ### Record
 
@@ -238,4 +248,4 @@ If you have any suggestions or bugs, drop them in our [Issues](https://github.co
 
 ## Contributing
 
-See [CONTRiBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
