@@ -1,6 +1,6 @@
 <h1 align="center">
   <!--img height="150" src="https://user-images.githubusercontent.com/24604927/147830756-70b99a0c-9f22-436d-bc78-6cc228491b35.png" /-->
-  <img height="300" src="https://user-images.githubusercontent.com/24604927/147843028-ccdc5ee8-e3d8-4017-9923-f11e5ba37eb8.gif" />
+  <img height="250" width="375" src="https://user-images.githubusercontent.com/24604927/147843028-ccdc5ee8-e3d8-4017-9923-f11e5ba37eb8.gif" />
   <br />
   <img src="https://img.shields.io/npms-io/final-score/c7" />
   <img src="https://img.shields.io/npms-io/maintenance-score/c7" />
