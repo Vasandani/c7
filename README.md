@@ -1,8 +1,24 @@
 <h1 align="center">
   <img height="150" src="https://user-images.githubusercontent.com/24604927/147830756-70b99a0c-9f22-436d-bc78-6cc228491b35.png" />
+  <br />
+  <img src="https://img.shields.io/npms-io/final-score/c7" />
+  <img src="https://img.shields.io/npms-io/maintenance-score/c7" />
+  <img src="https://img.shields.io/npms-io/popularity-score/c7" />
+  <img src="https://img.shields.io/npms-io/quality-score/c7" />
+  <img src="https://img.shields.io/npm/dm/c7" />
+  <br />
+  <img src="https://img.shields.io/github/license/svasandani/c7" />
+  <img src="https://img.shields.io/npm/v/c7?label=version" />
+  <img src="https://img.shields.io/github/commit-activity/m/svasandani/c7" />
+  <img src="https://img.shields.io/github/stars/svasandani/c7" />
+  <br />
+  <br />
+  c7
+  <br />
+  <br />
 </h1>
 <p align="center">
-  c7: The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
+  The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
 </p>
 
 
