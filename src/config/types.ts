@@ -8,6 +8,8 @@ export interface IConfigOptions {
   AllowVars?: boolean | undefined;
 }
 
+export const ValidOptions = ["MatchCase", "MatchPath", "AllowVars"];
+
 export interface IConfig {
   options?: IConfigOptions;
   ids?: IConfigId[];

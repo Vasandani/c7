@@ -2,9 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import { ConfigError } from "./errors.js";
-import { IConfig, IConfigId } from "./types.js";
-
-const ValidOptions = ["MatchCase", "MatchPath", "AllowVars"];
+import { IConfig, IConfigId, ValidOptions } from "./types.js";
 
 const sanitizeId = (data: any): IConfigId => {
   return {

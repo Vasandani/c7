@@ -1,8 +1,6 @@
 import { IConfig, IConfigOptions } from "../config/types.js";
 import { ArgsError } from "./errors.js";
-import { IParamActions, IParams } from "./types.js";
-
-const ValidActions = ["record", "add"];
+import { IParamActions, IParams, ValidActions } from "./types.js";
 
 const checkDoubleDash = (arg: string) => {
   if (arg.slice(0, 2) !== "--") {
