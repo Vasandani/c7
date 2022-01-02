@@ -1,6 +1,6 @@
 import { IConfig, IConfigOptions } from "../config/types.js";
 import { ArgsError } from "./errors.js";
-import { IParamActions, IParams, ValidActions } from "./types.js";
+import { IParams, isValidAction, ValidAction, ValidActions } from "./types.js";
 
 const checkDoubleDash = (arg: string) => {
   if (arg.slice(0, 2) !== "--") {
@@ -55,7 +55,8 @@ export const parseArgs = (config: IConfig, argv: string[]): IParams => {
     throw new ArgsError(`not enough parameters; wanted >0, got 0`);
   }
 
-  if (!ValidActions.includes(args[0])) {
+  const action = args.shift();
+  if (!action || !isValidAction(action)) {
     throw new ArgsError(
       `invalid action; wanted one of [${ValidActions.join(", ")}], got "${
         args[0]
@@ -63,7 +64,6 @@ export const parseArgs = (config: IConfig, argv: string[]): IParams => {
     );
   }
 
-  const action = args.shift() as IParamActions;
   const params: IParams = {
     action,
   };

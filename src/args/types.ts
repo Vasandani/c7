@@ -1,9 +1,12 @@
-export type IParamActions = "record" | "add";
+export const ValidActions = ["record", "add"] as const;
+export type ValidAction = typeof ValidActions[number];
 
-export const ValidActions = ["record", "add"];
+export const isValidAction = (action: string): action is ValidAction => {
+  return ValidActions.includes(action as ValidAction);
+};
 
 export interface IParams {
-  action: IParamActions;
+  action: ValidAction;
   id?: string;
   optionValues?: string[][];
 }
