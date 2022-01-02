@@ -337,7 +337,7 @@ const doOperation = (
   console.log(`${chalk.yellow(`[${operation.type}]\t\t\t"${path}"`)}`);
 };
 
-export const doWith = (params: IParams) => {
+export const doWith = async (params: IParams) => {
   const id = ensureDirExists(params);
   const idConfig = parseIdConfig(id);
 

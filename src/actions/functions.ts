@@ -18,16 +18,16 @@ export class Action implements IAction {
     }, {} as { [key in ValidAction]: (params: IParams) => void });
   }
 
-  doWith(params: IParams) {
-    this.functionRegister[params.action] &&
+  async doWith(params: IParams) {
+    (await this.functionRegister[params.action]) &&
       this.functionRegister[params.action](params);
   }
 
-  recordWith(params: IParams) {
-    record.doWith(params);
+  async recordWith(params: IParams) {
+    await record.doWith(params);
   }
 
-  addWith(params: IParams) {
-    add.doWith(params);
+  async addWith(params: IParams) {
+    await add.doWith(params);
   }
 }
