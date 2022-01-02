@@ -113,3 +113,5 @@ dist
 build/
 test/
 .c7/c7test/
+.c7.pre/
+.c7.post/
