@@ -2,39 +2,38 @@ import fs from "fs";
 import path from "path";
 
 import { ConfigError } from "./errors.js";
-import { IConfig, IConfigId, ValidOptions } from "./types.js";
+import {
+  IConfig,
+  IConfigOptions,
+  isValidOption,
+  ValidOption,
+  ValidOptions,
+} from "./types.js";
 
-const sanitizeId = (data: any): IConfigId => {
-  return {
-    name: "test",
-  };
+export const defaultOptions: IConfigOptions = {
+  MatchCase: true,
+  MatchPath: true,
+  AllowVars: true,
 };
 
-const sanitizeConfig = (data: any): IConfig => {
-  const config: IConfig = {};
+const sanitizeConfig = (data: IConfig): IConfig => {
+  const config: IConfig = {
+    options: defaultOptions,
+  };
 
-  if (!data.version) throw new ConfigError("no version specified in config");
-  if (data.options) {
-    config.options = {};
-
-    Object.keys(data.options).forEach((option) => {
-      if (!ValidOptions.includes(option))
-        throw new ConfigError(`unrecognized option ${option}`);
-      else {
-        const optionKey = option as keyof typeof config.options;
-        if (typeof config.options !== "undefined")
-          config.options[optionKey] = data.options[option];
-      }
-    });
-  }
-  if (data.ids) {
-    config.ids = [];
-
-    data.ids.forEach((id: any) => {
-      const sanitizedId = sanitizeId(id);
-      config.ids?.push(sanitizedId);
-    });
-  }
+  if (!("version" in data))
+    throw new ConfigError("no version specified in config");
+  Object.keys(data?.options || {}).forEach((option) => {
+    if (!isValidOption(option))
+      throw new ConfigError(`unrecognized option ${option}`);
+    else {
+      if (
+        typeof config.options !== "undefined" &&
+        typeof data.options !== "undefined"
+      )
+        config.options[option] = data.options[option] as boolean;
+    }
+  });
 
   return config;
 };
@@ -52,7 +51,9 @@ export const parseConfig = (): IConfig => {
   } catch (err: any) {
     if (err.code === "ENOENT") {
       // no file, this is okay
-      return {};
+      return {
+        options: defaultOptions,
+      };
     } else {
       throw new ConfigError(`error reading config: ${err.message}`);
     }

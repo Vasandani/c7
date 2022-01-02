@@ -1,16 +1,15 @@
-export interface IConfigId {
-  name: string;
-}
+export const ValidOptions = ["MatchCase", "MatchPath", "AllowVars"] as const;
+export type ValidOption = typeof ValidOptions[number];
+export type IConfigOptions = {
+  [key in ValidOption]: boolean;
+};
 
-export interface IConfigOptions {
-  MatchCase?: boolean | undefined;
-  MatchPath?: boolean | undefined;
-  AllowVars?: boolean | undefined;
-}
-
-export const ValidOptions = ["MatchCase", "MatchPath", "AllowVars"];
+export const isValidOption = (
+  option: string | undefined
+): option is ValidOption => {
+  return ValidOptions.includes(option as ValidOption);
+};
 
 export interface IConfig {
   options?: IConfigOptions;
-  ids?: IConfigId[];
 }

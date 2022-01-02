@@ -239,10 +239,10 @@ Here's a list of planned and existing features:
 
 |Feature|Description|Progress|
 |-----|-----|-----|
-|**Core**|Allows for creating directories and files from specified configuration files.|`TODO`|
-|**Record**|Allows the user to record component creation.|`TODO`|
-|**Edit files**|Uses a parser or raw plaintext diff to allow for modifying existing files.|`TODO`|
-|**Plugin support**|Add support for community plugins to enhance functionality (for example presets for apps).|`TODO`|
+|**Core**|Create directories and files from config files. Edit existing files based on text position.|`LIVE`|
+|**Record**|Record component creation to autogenerate config files.|`IN PROGRESS`|
+|**AST parsing**|Use AST diffs for more relevant edits to files.|`TODO`|
+|**Plugin support**|Community plugin sypport to enhance functionality (for example presets for apps).|`TODO`|
 
 If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
 

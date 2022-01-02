@@ -58,18 +58,21 @@ export const parseArgs = (config: IConfig, argv: string[]): IParams => {
   const action = args.shift();
   if (!action || !isValidAction(action)) {
     throw new ArgsError(
-      `invalid action; wanted one of [${ValidActions.join(", ")}], got "${
-        args[0]
-      }"`
+      `invalid action; wanted one of [${ValidActions.join(
+        ", "
+      )}], got "${action}"`
     );
   }
 
   const params: IParams = {
     action,
+    id: "default",
+    optionValues: [],
   };
 
   if (args[0].indexOf("--") !== 0) {
-    params.id = args.shift();
+    params.id = args[0];
+    args.shift();
   }
 
   checkDoubleDash(args[0]);

@@ -112,4 +112,4 @@ dist
 
 build/
 test/
-.c7/test/
+.c7/c7test/

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { ActionError, handleActionError } from "./actions/errors.js";
 import { Action } from "./actions/functions.js";
 import { ArgsError, handleArgsError } from "./args/errors.js";
 import { parseArgs } from "./args/functions.js";
@@ -24,9 +25,10 @@ try {
 } catch (err: any) {
   if (err instanceof ConfigError) {
     handleConfigError(err);
-  }
-  if (err instanceof ArgsError) {
+  } else if (err instanceof ArgsError) {
     handleArgsError(err);
+  } else if (err instanceof ActionError) {
+    handleActionError(err);
   } else {
     console.log("I'm sensing an anomaly in the force...");
   }
