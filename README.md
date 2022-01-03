@@ -239,12 +239,12 @@ Here's a list of planned and existing features:
 
 |Feature|Description|Progress|
 |-----|-----|-----|
-|**Core**|Create directories and files from config files. Edit existing files based on text position.|`LIVE`|
-|**Record**|Record component creation to autogenerate config files.|`IN PROGRESS`|
-|**AST parsing**|Use AST diffs for more relevant edits to files.|`TODO`|
-|**Starter packs**|Support for community contributed packs that define preexisting reusable code (for example React components).|`TODO`|
-|**Plugin support**|Community plugin support to enhance functionality (for example custom AST parsers).|`TODO`|
-|**Dependency management**|Allow managing starter packs and plugins in `c7.json` and installing them.|`TODO`|
+|**Core**|Create directories and files from config files. Edit existing files based on text position.|![live](https://img.shields.io/badge/-LIVE-green)|
+|**Record**|Record component creation to autogenerate config files.|![in-progress](https://img.shields.io/badge/-IN%20PROGRESS-yellow)|
+|**AST parsing**|Use AST diffs for more relevant edits to files.|![todo](https://img.shields.io/badge/-TODO-red)|
+|**Starter packs**|Support for community contributed packs that define preexisting reusable code (for example React components).|![todo](https://img.shields.io/badge/-TODO-red)|
+|**Plugin support**|Community plugin support to enhance functionality (for example custom AST parsers).|![todo](https://img.shields.io/badge/-TODO-red)|
+|**Dependency management**|Allow managing starter packs and plugins in `c7.json` and installing them.|![todo](https://img.shields.io/badge/-TODO-red)|
 
 If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
 
