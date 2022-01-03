@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/svasandani/c7/compare/v0.0.4...v0.0.5) (2022-01-03)
+
+
+### Features
+
+* **record:** add boilerplate tree traversal functions ([df5244d](https://github.com/svasandani/c7/commit/df5244de63d88349cc4c825785a321ca67dcd233))
+* **record:** add support for recording file creations ([f369e7d](https://github.com/svasandani/c7/commit/f369e7d8da7fbdeb930c710aea23e6f08b2e04c0))
+* **record:** add tree parsing to record action ([714c738](https://github.com/svasandani/c7/commit/714c738794a2153fe7a1d47708c3efb03642f03c))
+
 ### [0.0.4](https://github.com/svasandani/c7/compare/v0.0.3...v0.0.4) (2022-01-02)
 
 
