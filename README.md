@@ -92,7 +92,8 @@ It presents me with this prompt:
 
 ```bash
 $ c7 record component --name=Button
-Watching for changes... (Press any key to end the recording.)
+Starting to record...
+Make changes to your files, then press Enter to stop recording.
 ```
 
 Great! I'll go ahead and **manually** add the `Button` component now.
@@ -119,19 +120,18 @@ Once I'm done, I'll go back to my terminal and hit any key. I'm now presented wi
 
 ```bash
 $ c7 record component --name=Button
-Watching for changes... (Press any key to end the recording.)
+Starting to record...
+Make changes to your files, then press Enter to stop recording.
 Stopped recording!
 
 Calculating diffs...
 
 CHANGES:
-[ADDED]       `src/components/${name}/${name}.js`
-[MODIFIED]    `src/components/index.js`
-
-Does this look right? (Y/n) _
+[ADDED]       "src/components/${name}/${name}.js"
+[MODIFIED]    "src/components/index.js"
 ```
 
-After selecting `Y`, `c7` creates the file `c7.json` and the directory `.c7` if they don't exist already. This config file and directory is where `c7` stores all the data it needs to recreate what we just did. 
+Now, `c7` creates the file `c7.json` and the directory `.c7` if they don't exist already. This config file and directory is where `c7` stores all the data it needs to recreate what we just did. 
 
 It's smart enough to recognize that the path of the file we created contained our custom `name` parameter. If we were to define another custom parameter, for example `--basedir=src/components`, it would recognize that in the path too. It's also smart enough to understand how we modified the `index.js` file (we'll see how in a second).
 
@@ -151,7 +151,6 @@ Once I do, I'll see the following:
 $ c7 add component --name=Dropdown
 Applying diffs...
 
-CHANGES:
 [ADDED]       `src/components/Dropdown/Dropdown.js`
 [MODIFIED]    `src/components/index.js`
 ```
@@ -190,7 +189,8 @@ Wow! It got the paths right, and it even parsed `index.js` to figure out that we
 
 ```bash
 $ c7 record model --name=user --MatchCase=false
-Watching for changes... (Press any key to end the recording.)
+Starting to record...
+Make changes to your files, then press Enter to stop recording.
 Stopped recording!
 
 Calculating diffs...
