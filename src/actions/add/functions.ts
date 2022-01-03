@@ -336,14 +336,17 @@ const doOperation = (
     optionValues,
     id
   );
-  console.log(`${chalk.yellow(`[${operation.type}]\t\t\t"${path}"`)}`);
+  console.log(`${chalk.yellow(`[${operation.type}]\t"${path}"`)}`);
 };
 
 export const doWith = async (params: IParams, config: IConfig) => {
   const id = ensureDirExists(params);
+
+  console.log(`${chalk.green("Successfully found configuration...")}\n`);
+
   const idConfig = parseIdConfig(id);
 
-  console.log(`${chalk.green("Applying diffs...")}\n`);
+  console.log(`${chalk.yellow("Applying diffs...")}\n`);
 
   idConfig.operations?.forEach((operation) =>
     doOperation(operation, idConfig, params.optionValues || [], id)

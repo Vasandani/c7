@@ -54,7 +54,7 @@ const handleCreatedFile = async (
     data: node.hash,
   });
 
-  console.log(`${chalk.yellow(`[CREATE]\t\t\t"${consolePath}"`)}`);
+  console.log(`${chalk.yellow(`[CREATE]\t"${consolePath}"`)}`);
 };
 
 const handleModifiedFile = async (
@@ -147,8 +147,6 @@ export const diffTreesToConfig = async (
     );
     return;
   }
-
-  console.log(`${chalk.yellow("CHANGES:")}`);
 
   const transfomers: IParamTransformers = {
     id: params.id as string,

@@ -25,12 +25,13 @@ export const doWith = async (params: IParams, config: IConfig) => {
 
   console.log(
     `${chalk.green(
-      `Starting to record... Make changes to your files, then ${chalk.bold(
+      `Starting to record...\nMake changes to your files, then ${chalk.bold(
         "press Enter"
       )} to stop recording.`
     )}`
   );
   await dataFromStdIn();
+  console.log(`${chalk.green("Stopped recording!")}`);
 
   const postTree = new FileTree(
     process.cwd(),
@@ -41,7 +42,7 @@ export const doWith = async (params: IParams, config: IConfig) => {
   );
   await postTree.parseFiles();
 
-  console.log(`${chalk.green("Calculating diffs...")}\n`);
+  console.log(`${chalk.yellow("Calculating diffs...")}`);
 
   await diffTreesToConfig(preTree, postTree, params, config);
 
