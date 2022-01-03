@@ -41,7 +41,7 @@ export const doWith = async (params: IParams, config: IConfig) => {
   );
   await postTree.parseFiles();
 
-  console.log(`${chalk.yellow("Calculating diffs...")}`);
+  console.log(`${chalk.green("Calculating diffs...")}\n`);
 
   await diffTreesToConfig(preTree, postTree, params, config);
 

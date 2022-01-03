@@ -221,7 +221,9 @@ const operationActors: {
           ? replaceWithOptions(data, config.params, optionValues)
           : data;
 
-      fs.mkdirSync(path.join(transformedPath, `..`), { recursive: true });
+      try {
+        fs.mkdirSync(path.join(transformedPath, ".."), { recursive: true });
+      } catch (err: any) {}
       fs.writeFileSync(transformedPath, transformedData, { flag: "w" });
 
       return transformedPath;

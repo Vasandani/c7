@@ -1,18 +1,65 @@
-import { createHash } from "crypto";
+import chalk from "chalk";
+import { createHash, randomUUID } from "crypto";
 import ignore, { Ignore } from "ignore";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { FileType, IFileTree, INode } from "./types.js";
+import { FileType, IFileTree, INode, IParamTransformers } from "./types.js";
 import { IParams } from "../../../args/types.js";
 import { IIdConfig } from "../../types.js";
 import { IConfig } from "../../../config/types.js";
 import { ActionError } from "../../errors.js";
-import chalk from "chalk";
+import { replaceWithOptions } from "../../helpers.js";
 
-const handleModifiedFile = (
+const handleCreatedFile = async (
   node: INode,
-  params: IParams,
+  transformers: IParamTransformers,
+  config: IConfig,
+  idConfig: IIdConfig
+) => {
+  const relativePath = path.join(node.pathPrefix, node.identifier);
+  const fullPath = path.join(node.rootPath, relativePath);
+  const buf = await fs.readFile(fullPath);
+  const data = buf.toString();
+
+  const transformedData = replaceWithOptions(data, transformers.valueToUUID);
+
+  const pathInConfig = path.join(
+    process.cwd(),
+    `.c7`,
+    `c7${transformers.id}`,
+    `c7${node.hash}`
+  );
+  try {
+    await fs.mkdir(path.join(pathInConfig, ".."), { recursive: true });
+  } catch (err: any) {}
+  await fs.writeFile(pathInConfig, transformedData);
+
+  const transformedPath = config.options?.MatchPath
+    ? replaceWithOptions(relativePath, transformers.valueToUUID)
+    : relativePath;
+  const consolePath = config.options?.MatchPath
+    ? replaceWithOptions(
+        relativePath,
+        transformers.valueToOption.map(([value, option]) => [
+          value,
+          `\${${option}}`,
+        ])
+      )
+    : relativePath;
+
+  idConfig.operations?.push({
+    type: "CREATE",
+    path: transformedPath,
+    data: node.hash,
+  });
+
+  console.log(`${chalk.yellow(`[CREATE]\t\t\t"${consolePath}"`)}`);
+};
+
+const handleModifiedFile = async (
+  node: INode,
+  transformers: IParamTransformers,
   config: IConfig,
   idConfig: IIdConfig
 ) => {
@@ -20,20 +67,30 @@ const handleModifiedFile = (
   console.log(`${node.identifier} is modified!`);
 };
 
-const recursivelyHandleCreatedNode = (
+const recursivelyHandleCreatedNode = async (
   node: INode,
-  params: IParams,
+  transformers: IParamTransformers,
   config: IConfig,
   idConfig: IIdConfig
 ) => {
-  // TODO
-  console.log(`${node.identifier} is new!`);
+  if (node.type === "DIR") {
+    for (const subNode of node.nodes) {
+      await recursivelyHandleCreatedNode(
+        subNode,
+        transformers,
+        config,
+        idConfig
+      );
+    }
+  } else {
+    await handleCreatedFile(node, transformers, config, idConfig);
+  }
 };
 
-const recursivelyCheckModifiedNode = (
+const recursivelyHandleModifiedNode = async (
   preNode: INode,
   postNode: INode,
-  params: IParams,
+  transformers: IParamTransformers,
   config: IConfig,
   idConfig: IIdConfig
 ) => {
@@ -41,27 +98,32 @@ const recursivelyCheckModifiedNode = (
     throw new ActionError(`unexpected deletion!`);
 
   if (postNode.type === "DIR") {
-    postNode.nodes.forEach((subPostNode) => {
+    for (const subPostNode of postNode.nodes) {
       const existingNode = preNode.nodes.find(
         (subPreNode) => subPreNode.identifier === subPostNode.identifier
       );
 
       if (existingNode) {
         if (subPostNode.hash !== existingNode.hash)
-          recursivelyCheckModifiedNode(
+          await recursivelyHandleModifiedNode(
             existingNode,
             subPostNode,
-            params,
+            transformers,
             config,
             idConfig
           );
       } else {
         // this directory and all children are new
-        recursivelyHandleCreatedNode(subPostNode, params, config, idConfig);
+        await recursivelyHandleCreatedNode(
+          subPostNode,
+          transformers,
+          config,
+          idConfig
+        );
       }
-    });
+    }
   } else {
-    handleModifiedFile(postNode, params, config, idConfig);
+    await handleModifiedFile(postNode, transformers, config, idConfig);
   }
 };
 
@@ -86,20 +148,46 @@ export const diffTreesToConfig = async (
     return;
   }
 
-  const idDir = path.join(process.cwd(), `.c7`, `c7${params.id}`);
+  console.log(`${chalk.yellow("CHANGES:")}`);
+
+  const transfomers: IParamTransformers = {
+    id: params.id as string,
+    valueToUUID: [],
+    uuidToOption: [],
+    valueToOption: [],
+  };
+  params.optionValues?.forEach(([option, value]) => {
+    const uuid = randomUUID();
+    transfomers.valueToUUID.push([value, uuid]);
+    transfomers.uuidToOption.push([uuid, option]);
+    transfomers.valueToOption.push([value, option]);
+  });
 
   const idConfig: IIdConfig = {
     id: params.id,
     options: config.options,
+    operations: [],
+    params: transfomers.uuidToOption,
   };
 
-  recursivelyCheckModifiedNode(
+  await recursivelyHandleModifiedNode(
     preTree.rootNode,
     postTree.rootNode,
-    params,
+    transfomers,
     config,
     idConfig
   );
+
+  const idPath = path.join(
+    process.cwd(),
+    `.c7`,
+    `c7${params.id}`,
+    `config.json`
+  );
+  try {
+    await fs.mkdir(path.join(idPath, ".."), { recursive: true });
+  } catch (err: any) {}
+  await fs.writeFile(idPath, JSON.stringify(idConfig, null, 2));
 };
 
 const recursivelyUpdateNodes = async (
@@ -200,13 +288,22 @@ export class FileTree implements IFileTree {
     try {
       await fs.rm(path.join(this.rootProjectedDir), {
         recursive: true,
+        force: true,
       });
 
-      const ignores = ignore().add(`.git`);
-      const gitignore = await fs.readFile(
-        path.join(process.cwd(), `.gitignore`)
-      );
-      if (gitignore) ignores.add(gitignore.toString());
+      const ignores = ignore().add([
+        `.git`,
+        `c7.json`,
+        `.c7`,
+        `.c7.pre`,
+        `.c7.post`,
+      ]);
+      try {
+        const gitignore = await fs.readFile(
+          path.join(process.cwd(), `.gitignore`)
+        );
+        if (gitignore) ignores.add(gitignore.toString());
+      } catch (err: any) {}
 
       this.rootNode = (await recursivelyUpdateNodes(
         this.rootNode,
@@ -214,6 +311,7 @@ export class FileTree implements IFileTree {
         this.rootProjectedDir
       )) as INode;
     } catch (err: any) {
+      console.log("Error parsing files!");
       console.error(err);
     }
   }
