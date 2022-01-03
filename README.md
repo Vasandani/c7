@@ -243,7 +243,7 @@ Here's a list of planned and existing features:
 |**Record**|Record component creation to autogenerate config files.|`IN PROGRESS`|
 |**AST parsing**|Use AST diffs for more relevant edits to files.|`TODO`|
 |**Starter packs**|Support for community contributed packs that define preexisting reusable code (for example React components).|`TODO`|
-|**Plugin support**|Community plugin support to enhance functionality (for example presets for apps).|`TODO`|
+|**Plugin support**|Community plugin support to enhance functionality (for example custom AST parsers).|`TODO`|
 |**Dependency management**|Allow managing starter packs and plugins in `c7.json` and installing them.|`TODO`|
 
 If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
