@@ -1,4 +1,4 @@
-import { IIdConfig, Operation } from "./add/types";
+import { IIdConfig, Operation } from "./types";
 
 export const replaceWithOptions = (
   toReplace: string,

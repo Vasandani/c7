@@ -1,5 +1,6 @@
 export interface IFileTree {
   rootDir: string;
+  rootProjectedDir: string;
   rootNode: INode;
 }
 
@@ -9,6 +10,7 @@ export interface INode {
   hash: string;
   type: FileType;
   identifier: string;
+  rootPath: string;
   pathPrefix: string;
   nodes: INode[];
   calculateHash: (withData: string) => string;

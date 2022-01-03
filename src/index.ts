@@ -22,7 +22,7 @@ const run = async () => {
     _("Parsed args!");
 
     const generatedAction = new Action(params.action);
-    await generatedAction.doWith(params);
+    await generatedAction.doWith(params, config);
   } catch (err: any) {
     if (err instanceof ConfigError) {
       handleConfigError(err);

@@ -6,7 +6,7 @@ import { ArgsError } from "../../args/errors.js";
 import { IParams } from "../../args/types.js";
 import { ConfigError } from "../../config/errors.js";
 import { defaultOptions } from "../../config/functions.js";
-import { isValidOption } from "../../config/types.js";
+import { IConfig, isValidOption } from "../../config/types.js";
 import { ActionError } from "../errors.js";
 import { conditionallyReplacePath, replaceWithOptions } from "../helpers.js";
 import {
@@ -17,7 +17,7 @@ import {
   Operation,
   ValidType,
   ValidTypes,
-} from "./types.js";
+} from "../types.js";
 
 const assertFieldInObject = (
   object: object,
@@ -337,7 +337,7 @@ const doOperation = (
   console.log(`${chalk.yellow(`[${operation.type}]\t\t\t"${path}"`)}`);
 };
 
-export const doWith = async (params: IParams) => {
+export const doWith = async (params: IParams, config: IConfig) => {
   const id = ensureDirExists(params);
   const idConfig = parseIdConfig(id);
 
