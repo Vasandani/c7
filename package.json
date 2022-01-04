@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "chalk": "^5.0.0",
+    "fast-diff": "^1.2.0",
     "ignore": "^5.2.0"
   },
   "config": {

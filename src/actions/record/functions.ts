@@ -25,7 +25,9 @@ export const doWith = async (params: IParams, config: IConfig) => {
 
   console.log(
     `${chalk.green(
-      `Starting to record...\nMake changes to your files, then ${chalk.bold(
+      `Starting to record...${" ".repeat(
+        process.stdout.columns - 21
+      )}\nMake changes to your files, then ${chalk.bold(
         "press Enter"
       )} to stop recording.`
     )}`

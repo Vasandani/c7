@@ -1,15 +1,42 @@
 import chalk from "chalk";
 import { createHash, randomUUID } from "crypto";
+import diff from "fast-diff";
 import ignore, { Ignore } from "ignore";
 import { promises as fs } from "fs";
 import path from "path";
 
 import { FileType, IFileTree, INode, IParamTransformers } from "./types.js";
 import { IParams } from "../../../args/types.js";
-import { IIdConfig } from "../../types.js";
+import { IIdConfig, ModifyOperation } from "../../types.js";
 import { IConfig } from "../../../config/types.js";
 import { ActionError } from "../../errors.js";
 import { replaceWithOptions } from "../../helpers.js";
+
+const makeFileWithParentDir = async (filePath: string, data: string) => {
+  try {
+    await fs.mkdir(path.join(filePath, ".."), { recursive: true });
+  } catch (err: any) {}
+  await fs.writeFile(filePath, data);
+};
+
+const writeToDataFile = async (
+  transformers: IParamTransformers,
+  dataToTransform: string,
+  dataIdentifier: string
+) => {
+  const transformedData = replaceWithOptions(
+    dataToTransform,
+    transformers.valueToUUID
+  );
+
+  const pathInConfig = path.join(
+    process.cwd(),
+    `.c7`,
+    `c7${transformers.id}`,
+    dataIdentifier
+  );
+  await makeFileWithParentDir(pathInConfig, transformedData);
+};
 
 const handleCreatedFile = async (
   node: INode,
@@ -22,18 +49,7 @@ const handleCreatedFile = async (
   const buf = await fs.readFile(fullPath);
   const data = buf.toString();
 
-  const transformedData = replaceWithOptions(data, transformers.valueToUUID);
-
-  const pathInConfig = path.join(
-    process.cwd(),
-    `.c7`,
-    `c7${transformers.id}`,
-    `c7${node.hash}`
-  );
-  try {
-    await fs.mkdir(path.join(pathInConfig, ".."), { recursive: true });
-  } catch (err: any) {}
-  await fs.writeFile(pathInConfig, transformedData);
+  await writeToDataFile(transformers, data, `c7${node.hash}`);
 
   const transformedPath = config.options?.MatchPath
     ? replaceWithOptions(relativePath, transformers.valueToUUID)
@@ -58,13 +74,73 @@ const handleCreatedFile = async (
 };
 
 const handleModifiedFile = async (
-  node: INode,
+  preNode: INode,
+  postNode: INode,
   transformers: IParamTransformers,
   config: IConfig,
-  idConfig: IIdConfig
+  idConfig: IIdConfig,
+  preProjectedDir: string
 ) => {
-  // TODO
-  console.log(`${node.identifier} is modified!`);
+  const relativePath = path.join(preNode.pathPrefix, preNode.identifier);
+
+  const fullPrePath = path.join(preProjectedDir, relativePath);
+  const preBuf = await fs.readFile(fullPrePath);
+  const preData = preBuf.toString();
+
+  const fullPostPath = path.join(postNode.rootPath, relativePath);
+  const postBuf = await fs.readFile(fullPostPath);
+  const postData = postBuf.toString();
+
+  const transformedPath = config.options?.MatchPath
+    ? replaceWithOptions(relativePath, transformers.valueToUUID)
+    : relativePath;
+  const consolePath = config.options?.MatchPath
+    ? replaceWithOptions(
+        relativePath,
+        transformers.valueToOption.map(([value, option]) => [
+          value,
+          `\${${option}}`,
+        ])
+      )
+    : relativePath;
+
+  const modifyOperation: ModifyOperation = {
+    type: "MODIFY",
+    path: transformedPath,
+    inserts: [],
+  };
+
+  const chunks = diff(preData, postData);
+  let accumulatedPrefix = "";
+  let inserts = 0;
+
+  for (const [code, text] of chunks) {
+    if (code === diff.DELETE)
+      throw new ActionError(`unexpected deletion in modified file`);
+
+    if (code === diff.EQUAL) {
+      accumulatedPrefix += text;
+    } else {
+      const dataPath = `${postNode.hash}--edit${++inserts}`;
+      await writeToDataFile(transformers, text, `c7${dataPath}`);
+
+      const lines = accumulatedPrefix.split(`\n`);
+      const lineStart = lines.length;
+      const colStart = lines[lines.length - 1].length;
+
+      modifyOperation.inserts.push({
+        data: dataPath,
+        options: {
+          lineStart,
+          colStart,
+        },
+      });
+    }
+  }
+
+  idConfig.operations?.push(modifyOperation);
+
+  console.log(`${chalk.yellow(`[MODIFY]\t"${consolePath}"`)}`);
 };
 
 const recursivelyHandleCreatedNode = async (
@@ -92,7 +168,8 @@ const recursivelyHandleModifiedNode = async (
   postNode: INode,
   transformers: IParamTransformers,
   config: IConfig,
-  idConfig: IIdConfig
+  idConfig: IIdConfig,
+  preProjectedDir: string
 ) => {
   if (preNode.type !== postNode.type)
     throw new ActionError(`unexpected deletion!`);
@@ -110,7 +187,8 @@ const recursivelyHandleModifiedNode = async (
             subPostNode,
             transformers,
             config,
-            idConfig
+            idConfig,
+            preProjectedDir
           );
       } else {
         // this directory and all children are new
@@ -123,7 +201,14 @@ const recursivelyHandleModifiedNode = async (
       }
     }
   } else {
-    await handleModifiedFile(postNode, transformers, config, idConfig);
+    await handleModifiedFile(
+      preNode,
+      postNode,
+      transformers,
+      config,
+      idConfig,
+      preProjectedDir
+    );
   }
 };
 
@@ -173,7 +258,8 @@ export const diffTreesToConfig = async (
     postTree.rootNode,
     transfomers,
     config,
-    idConfig
+    idConfig,
+    preTree.rootProjectedDir
   );
 
   const idPath = path.join(
