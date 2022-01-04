@@ -56,9 +56,9 @@ For example, you want to create a React component. To teach it, you might create
 $ c7 record component --name=Button
 ```
 
-Then, you'd add the relevant files (`Button.jsx`, `Button.css`, whatever your heart desires). `c7` will replace every occurrence of `Button` with a placeholder, that will be filled in when you add a new component.
+Then, you'd add the relevant files (`Button.jsx`, `Button.css`, whatever your heart desires). `c7` will replace every occurrence of `Button` with a placeholder that will be filled in when you add a new component.
 
-Note: If you want to create something else use `--name=SomethingElse`. Call it whatever you want!
+Note: If you want to create something else, use `--name=<whatever you want>`. Your choice!
 
 ### Add more somethings
 
@@ -80,9 +80,7 @@ $ c7 add component --name=Input
 
 ### Is it stable?
 
-Not yet! We're using semantic versioning, and our 1.0.0 release is coming soon. That will have the core features, and breaking changes will result in a major version upgrade.
-
-[Watch](https://github.com/svasandani/c7/subscription) this repository to be notified when 1.0.0 comes out!
+Yes! Our 2.0.0 release is stable and ready for production use. If you catch any bugs, please drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
 
 ### What's the point? Can't I just use existing packages/some other solution?
 
