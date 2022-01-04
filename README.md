@@ -19,15 +19,6 @@ Why `c7`? It's an easy way to standardize component generation. Maybe you've alr
 
 Plus, with starter packs (coming soon), you can easily bootstrap your project with best practices for anything the community supports, in any language: hooks in React, handlers in Express, goroutines in Go, routes in Rust, and more. If the community doesn't have a starter pack, you can even make your own!
 
-<h2>
-  Warning
-  <img height="24px" src="https://user-images.githubusercontent.com/24604927/147856240-1eeb42e4-b703-4ea4-802b-10aa6ee11335.png" />
-</h2>
-
-This package is in an unreleased state. DO NOT USE PRE-1.X.X VERSIONS!
-
-If you'd like to contribute, please see [CONTRIBUTING.md](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md).
-
 <br />
 
 -----
