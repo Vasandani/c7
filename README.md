@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/github/stars/svasandani/c7" />
 </h1>
 
-`c7` is a CLI that allows you to define reusable code components and recreate them with different names/paths/variables—no more copy-pasting folders an changing filenames, imports, exports, comments, etc.. With `c7`, just [record](#record) yourself creating a component, and then [add](#add) a new one when you need it. No time-consuming config files needed.
+`c7` is a CLI that allows you to define reusable code components and recreate them with different names/paths/variables—no more copy-pasting folders an changing filenames, imports, exports, comments, or anything else. With `c7`, just [record](#record-yourself-creating-something) yourself creating a component, and then [add](#add-more-somethings) a new one when you need it. No time-consuming config files needed.
 
 Why `c7`? It's an easy way to standardize component generation. Maybe you've already scripted a macro to do this, but your team and other people contributing to your repo won't have access to it. Make it easier for everyone—contributors, maintainers, you.
 
