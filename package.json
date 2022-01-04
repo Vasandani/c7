@@ -1,6 +1,6 @@
 {
   "name": "c7",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "c7: The Configurable Committable Cross-appliCation Custom Component Creator",
   "main": "index.js",
   "type": "module",
