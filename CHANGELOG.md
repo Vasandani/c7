@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/svasandani/c7/compare/v0.0.5...v1.0.0) (2022-01-04)
+
+
+### Features
+
+* **record:** add modified file parser ([98f4424](https://github.com/svasandani/c7/commit/98f4424f5b33a752999eacc9610664e6e5675061))
+
 ### [0.0.5](https://github.com/svasandani/c7/compare/v0.0.4...v0.0.5) (2022-01-03)
 
 
