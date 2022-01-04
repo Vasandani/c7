@@ -32,18 +32,18 @@ const operationSanitizers: {
 } = {
   CREATE: (operation: Operation) => {
     if (!isValidCreateOperation(operation))
-      throw new ConfigError(`missing field "data" in operation`);
+      throw new ConfigError(`missing field "template" in operation`);
     assertFieldInObject(operation, "path", () => {
       throw new ConfigError(`missing field "path" in operation`);
     });
-    assertFieldInObject(operation, "data", () => {
-      throw new ConfigError(`missing field "data" in operation`);
+    assertFieldInObject(operation, "template", () => {
+      throw new ConfigError(`missing field "template" in operation`);
     });
 
     return {
       type: "CREATE",
       path: operation.path,
-      data: operation.data,
+      template: operation.template,
     };
   },
   MODIFY: (operation) => {
@@ -61,8 +61,8 @@ const operationSanitizers: {
 
     if (operation.inserts) {
       sanitizedOperation.inserts = operation.inserts.map((insert) => {
-        assertFieldInObject(insert, "data", () => {
-          throw new ConfigError(`missing field "data" in insert operation`);
+        assertFieldInObject(insert, "template", () => {
+          throw new ConfigError(`missing field "template" in insert operation`);
         });
         assertFieldInObject(insert, "options", () => {
           throw new ConfigError(`missing field "options" in insert operation`);
@@ -79,7 +79,7 @@ const operationSanitizers: {
         });
 
         const sanitizedInsert = {
-          data: insert.data,
+          template: insert.template,
           options: {
             lineStart: insert.options.lineStart,
             colStart: insert.options.colStart,
@@ -143,7 +143,8 @@ const sanitizeConfig = (data: IIdConfig, id: string): IIdConfig => {
 };
 
 const ensureDirExists = (params: IParams) => {
-  const idDir = path.join(process.cwd(), `.c7`, `c7${params.id}`);
+  if (!params.id) throw new ActionError(`how did I get here?`);
+  const idDir = path.join(process.cwd(), `.c7`, params.id);
 
   if (typeof params.id === "undefined")
     throw new ActionError(
@@ -164,13 +165,13 @@ const ensureDirExists = (params: IParams) => {
 };
 
 const updateConfig = (config: IIdConfig, id: string) => {
-  const idConfig = path.join(process.cwd(), `.c7`, `c7${id}`, `config.json`);
+  const idConfig = path.join(process.cwd(), `.c7`, id, `config.json`);
 
   fs.writeFileSync(idConfig, JSON.stringify(config, null, 2));
 };
 
 const parseIdConfig = (id: string) => {
-  const idConfig = path.join(process.cwd(), `.c7`, `c7${id}`, `config.json`);
+  const idConfig = path.join(process.cwd(), `.c7`, id, `config.json`);
 
   try {
     const buf = fs.readFileSync(idConfig);
@@ -205,8 +206,8 @@ const operationActors: {
       const dataPath = path.join(
         process.cwd(),
         `.c7`,
-        `c7${id}`,
-        `c7${operation.data}`
+        id,
+        `${operation.template}.c7`
       );
       const buf = fs.readFileSync(dataPath);
       const data = buf.toString();
@@ -261,8 +262,8 @@ const operationActors: {
           const dataPath = path.join(
             process.cwd(),
             `.c7`,
-            `c7${id}`,
-            `c7${insert.data}`
+            id,
+            `${insert.template}.c7`
           );
           const buf = fs.readFileSync(dataPath);
           const data = buf.toString();

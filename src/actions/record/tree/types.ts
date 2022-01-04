@@ -16,12 +16,6 @@ export interface INode {
   calculateHash: (withData: string) => string;
 }
 
-export interface IChunk {
-  data: string;
-  lineStart: number;
-  colStart: number;
-}
-
 export interface IParamTransformers {
   id: string;
   valueToUUID: string[][];

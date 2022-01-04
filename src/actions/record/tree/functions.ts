@@ -32,8 +32,8 @@ const writeToDataFile = async (
   const pathInConfig = path.join(
     process.cwd(),
     `.c7`,
-    `c7${transformers.id}`,
-    dataIdentifier
+    transformers.id,
+    `${dataIdentifier}.c7`
   );
   await makeFileWithParentDir(pathInConfig, transformedData);
 };
@@ -49,7 +49,7 @@ const handleCreatedFile = async (
   const buf = await fs.readFile(fullPath);
   const data = buf.toString();
 
-  await writeToDataFile(transformers, data, `c7${node.hash}`);
+  await writeToDataFile(transformers, data, relativePath);
 
   const transformedPath = config.options?.MatchPath
     ? replaceWithOptions(relativePath, transformers.valueToUUID)
@@ -67,7 +67,7 @@ const handleCreatedFile = async (
   idConfig.operations?.push({
     type: "CREATE",
     path: transformedPath,
-    data: node.hash,
+    template: relativePath,
   });
 
   console.log(`${chalk.yellow(`[CREATE]\t"${consolePath}"`)}`);
@@ -121,15 +121,15 @@ const handleModifiedFile = async (
     if (code === diff.EQUAL) {
       accumulatedPrefix += text;
     } else {
-      const dataPath = `${postNode.hash}--edit${++inserts}`;
-      await writeToDataFile(transformers, text, `c7${dataPath}`);
+      const templatePath = `${relativePath}.${++inserts}.c7`;
+      await writeToDataFile(transformers, text, templatePath);
 
       const lines = accumulatedPrefix.split(`\n`);
       const lineStart = lines.length;
       const colStart = lines[lines.length - 1].length;
 
       modifyOperation.inserts.push({
-        data: dataPath,
+        template: templatePath,
         options: {
           lineStart,
           colStart,
@@ -227,7 +227,7 @@ export const diffTreesToConfig = async (
   if (preTree.rootNode.hash === postTree.rootNode.hash) {
     console.log(
       `${chalk.red(
-        "No changes detected! If you did make some changes, check that:\n- they weren't in an ignored directory\n- they didn't cause a collision in a 256-bit hashing algorithm (probably not this)\n\nIf you've checked all of these and it still isn't working, please file a bug at https://github.com/svasandani/c7/issues. Thanks!"
+        "No changes detected! If you did make some changes, check that:\n- they weren't in an ignored directory\n- they didn't cause a collision in a 256-bit hashing algorithm (probably not this)\n\nIf you've checked all of these and it still isn't working, please file a bug at https://github.com/Vasandani/c7/issues. Thanks!"
       )}`
     );
     return;
@@ -262,12 +262,7 @@ export const diffTreesToConfig = async (
     preTree.rootProjectedDir
   );
 
-  const idPath = path.join(
-    process.cwd(),
-    `.c7`,
-    `c7${params.id}`,
-    `config.json`
-  );
+  const idPath = path.join(process.cwd(), `.c7`, params.id, `config.json`);
   try {
     await fs.mkdir(path.join(idPath, ".."), { recursive: true });
   } catch (err: any) {}

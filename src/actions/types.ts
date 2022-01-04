@@ -16,12 +16,12 @@ export type Operation = CreateOperation | ModifyOperation;
 export interface CreateOperation {
   type: ValidType;
   path: string;
-  data: string;
+  template: string;
 }
 export const isValidCreateOperation = (
   operation: Operation
 ): operation is CreateOperation => {
-  return "data" in operation && typeof operation.data !== "undefined";
+  return "template" in operation && typeof operation.template !== "undefined";
 };
 export interface ModifyOperation {
   type: ValidType;
@@ -31,7 +31,7 @@ export interface ModifyOperation {
       lineStart: number;
       colStart: number;
     };
-    data: string;
+    template: string;
   }>;
 }
 export const isValidModifyOperation = (
