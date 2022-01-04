@@ -27,7 +27,14 @@
     "macros",
     "macro",
     "infrastructure-as-code",
-    "generate"
+    "generate",
+    "generators",
+    "cli",
+    "boilerplate",
+    "generator",
+    "scaffolding",
+    "programmatic",
+    "automation"
   ],
   "author": "Shailesh Vasandani",
   "license": "MIT",

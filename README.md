@@ -1,5 +1,4 @@
 <h1 align="center">
-  <!--img height="150" src="https://user-images.githubusercontent.com/24604927/147830756-70b99a0c-9f22-436d-bc78-6cc228491b35.png" /-->
   <img height="250" width="375" src="https://user-images.githubusercontent.com/24604927/147843028-ccdc5ee8-e3d8-4017-9923-f11e5ba37eb8.gif" />
   <br />
   <img src="https://img.shields.io/npms-io/final-score/c7" />
@@ -12,15 +11,13 @@
   <img src="https://img.shields.io/npm/v/c7?label=version" />
   <img src="https://img.shields.io/github/commit-activity/m/svasandani/c7" />
   <img src="https://img.shields.io/github/stars/svasandani/c7" />
-  <br />
-  <br />
-  c7
-  <br />
-  <br />
 </h1>
-<p align="center">
-  The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
-</p>
+
+`c7` is a CLI that allows you to define reusable code components and recreate them with different names/paths/variables—no more copy-pasting folders an changing filenames, imports, exports, comments, etc.. With `c7`, just [record](#record) yourself creating a component, and then [add](#add) a new one when you need it. No time-consuming config files needed.
+
+Why `c7`? It's an easy way to standardize component generation. Maybe you've already scripted a macro to do this, but your team and other people contributing to your repo won't have access to it. Make it easier for everyone—contributors, maintainers, you.
+
+Plus, with starter packs (coming soon), you can easily bootstrap your project with best practices for anything the community supports, in any language: hooks in React, handlers in Express, goroutines in Go, routes in Rust, and more. If the community doesn't have a starter pack, you can even make your own!
 
 <h2>
   Warning
@@ -31,222 +28,130 @@ This package is in an unreleased state. DO NOT USE PRE-1.X.X VERSIONS!
 
 If you'd like to contribute, please see [CONTRIBUTING.md](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md).
 
+<br />
 
-## Quickstart
-### Record
+-----
+<p align="center">
+  The <b>C</b>onfigurable <b>C</b>ommittable <b>C</b>ross-appli<b>C</b>ation <b>C</b>ustom <b>C</b>omponent <b>C</b>reator
+</p>
 
-```bash
-$ npx c7@latest record [<id> --<option1>=<value1> --<option2>=<value2> ...]
-```
+-----
+<br />
 
-### Add
+## How do I use it?
+### Install it
 
-```bash
-$ npx c7@latest add [<id> --<option1>=<value1> --<option2>=<value2> ...]
-```
+Install it globally with `npm`.
 
-### Install
-
-**Warning: We don't recommend installing `c7` globally. Use `npx` instead.**
 ```bash
 $ npm install -g c7
 ```
 
-## Do I need this?
+### Record yourself creating something
 
-Do you:
-- Write lots of boilerplate? 
-- Want the power of macros but with committable configuration files? 
-- Want to standardize how components/routes/models/reusable bits are created in your repo? 
-- Hate needing different component generators for different services?
+`c7` needs to know how to make what you want. If it doesn't already know, teach it by letting it watch you. Run the command below, then make your changes. Press Enter once you're done, and it'll automatically create all the configuration for you.
 
-**If you answered yes to at least one of the questions above, this package is for you!**
-
-## Alright, I'm on board... how does it work?
-For this follow-along, let's assume we're developing a React app with the following directory:
-
-```
-|-node_modules/
-|-public/
-|-src/
-  |-components/
-  |-hooks/
-  |-pages/
-  |-App.js
-  |-App.cs
-|-package.json
-|-package-lock.json
+```bash
+$ c7 record [<id> --<param1>=<value1> --<param2>=<value2> ...]
 ```
 
-### 1. Record yourself adding/editing files _(Optional, but recommended)_
+`id` is a unique identifier for whatever you're making. If it's a `Page` in a React app, use `Page`. Any alphanumeric value is supported here.
 
-I'll start by recording myself creating something reusable (it could be anything). Let's say I want to create a React component. I'll teach `c7` what to do by recording myself creating a `component` (but I could call it anything, like `route` or `model`). I'll also add a custom `name` parameter set to `Button` (this will make more sense later). To do that, I'll run this command:
+`param`s and `value`s allow you to define custom variables for each code component. For example, a React design component would probably have a `name`, so you'd add the `--name` param. The `value` is whatever that param is set to in the code you create.
+
+For example, you want to create a React component. To teach it, you might create a component with the name `Button`. You'd run this:
 
 ```bash
 $ c7 record component --name=Button
 ```
 
-**Note: custom parameters must start with a lowercase letter. Uppercase parameters are specific to `c7`.**
+Then, you'd add the relevant files (`Button.jsx`, `Button.css`, whatever your heart desires). `c7` will replace every occurrence of `Button` with a placeholder, that will be filled in when you add a new component.
 
-It presents me with this prompt:
+Note: If you want to create something else use `--name=SomethingElse`. Call it whatever you want!
 
-```bash
-$ c7 record component --name=Button
-Starting to record...
-Make changes to your files, then press Enter to stop recording.
-```
+### Add more somethings
 
-Great! I'll go ahead and **manually** add the `Button` component now.
-
-#### Add `src/components/Button/Button.js`
-```javascript
-export const Button = () => {
-  // TODO
-}
-```
-
-#### Modify `src/components/index.js` (new lines indicated by comments)
-```javascript
-import { Button } from "./Button/Button.js"; // <- manually added this line
-import { Input } from "./Input/Input.js";
-
-export {
-  Button, // <- manually added this line too
-  Input,
-};
-```
-
-Once I'm done, I'll go back to my terminal and hit any key. I'm now presented with this screen:
+Once the configuration is generated, you can add new items whenever you want! Run the command below with the same `id` and `param`s, and `c7` will figure out where to put the new values.
 
 ```bash
-$ c7 record component --name=Button
-Starting to record...
-Make changes to your files, then press Enter to stop recording.
-Stopped recording!
-
-Calculating diffs...
-
-CHANGES:
-[ADDED]       "src/components/${name}/${name}.js"
-[MODIFIED]    "src/components/index.js"
+$ c7 add [<id> --<param1>=<value1> --<param2>=<value2> ...]
 ```
 
-Now, `c7` creates the file `c7.json` and the directory `.c7` if they don't exist already. This config file and directory is where `c7` stores all the data it needs to recreate what we just did. 
+The `id` determines what is generated. It has to match what you recorded, or in the case of a starter pack, whatever is specified by the author of the starter pack. 
 
-It's smart enough to recognize that the path of the file we created contained our custom `name` parameter. If we were to define another custom parameter, for example `--basedir=src/components`, it would recognize that in the path too. It's also smart enough to understand how we modified the `index.js` file (we'll see how in a second).
-
-I could technically create these artifacts (the configuration file and the directory) myself and still get the same result. That's the beauty of `c7`: it's configurable and controllable. It's just easier to do have them generated automatically. Now, let's get on to adding more components.
-
-### 2. Add new components
-
-I now want to add a new `Dropdown` component. It's as easy as running the following command:
+Use the same `param`s as when you recorded, but with updated values. Using the React component example above, if you wanted to create an `Input` component, you'd run this:
 
 ```bash
-$ c7 add component --name=Dropdown
+$ c7 add component --name=Input
 ```
 
-Once I do, I'll see the following:
+## FAQs
 
-```bash
-$ c7 add component --name=Dropdown
-Applying diffs...
+### Is it stable?
 
-[ADDED]       `src/components/Dropdown/Dropdown.js`
-[MODIFIED]    `src/components/index.js`
-```
+Not yet! We're using semantic versioning, and our 1.0.0 release is coming soon. That will have the core features, and breaking changes will result in a major version upgrade.
 
-Awesome! Let's take a look at what it did automatically.
+[Watch](https://github.com/svasandani/c7/subscription) this repository to be notified when 1.0.0 comes out!
 
-#### Added `src/components/Dropdown/Dropdown.js`
-```javascript
-export const Dropdown = () => {
-  // TODO
-}
-```
+### What's the point? Can't I just use existing packages/some other solution?
 
-#### Modified `src/components/index.js` (new lines indicated by comments)
-```javascript
-import { Button } from "./Button/Button.js";
-import { Dropdown } from "./Dropdown/Dropdown.js"; // <- automatically added this line
-import { Input } from "./Input/Input.js";
+Sure! Whatever works best for you works best for you, and if that's not `c7`, we encourage you to do what makes you happy.
 
-export {
-  Button,
-  Dropdown, // <- automatically added this line too
-  Input,
-};
-```
+The key advantages of `c7` are that:
+- since configurations can be committed, everyone in your team can generate things the same way
+- it's not opinionated at all—create components however you want
+- if you do want to do things the idiomatic way, you can with starter packs (coming soon!)
+- super simple configuration—just record file creation, and `c7` does the rest
 
-Wow! It got the paths right, and it even parsed `index.js` to figure out that we were adding imports and exports. If you've modified a file that doesn't have a supported parser yet, it'll fall back to inserting or modifying line-by-line. 
+### How does modifying files work?
 
-### 3. Use all our saved time to figure out what else `c7` can do
+Currently, `c7` looks for where you've added data based on line and col position. It will add data at the same place (adjusting to make sure it stays even if things shift a little). Eventually, we'll support AST parsers to more meaningfully modify files.
 
-`c7` isn't just for React components. Any time you need to programmatically add/modify file(s) in your codebase, `c7` can help. Take a look at a few examples below for inspiration:
+We'll support a limited subset, but we'll allow plugins to support other community-written parsers.
 
-#### Adding routes, handlers, and validators to a REST endpoint
+## Configuring `c7`
 
-**Note: `MatchCase` is a `c7` specific parameter that determines whether the exact case of custom parameters must be matched. Setting it to false allows `c7` to generate boilerplate for functions that don't use the exact case too (e.g. `validateUser`, etc.).**
-
-```bash
-$ c7 record model --name=user --MatchCase=false
-Starting to record...
-Make changes to your files, then press Enter to stop recording.
-Stopped recording!
-
-Calculating diffs...
-
-CHANGES:
-[ADDED]       `src/handlers/${name}.js`
-[ADDED]       `src/validators/${name}.js`
-[MODIFIED]    `src/routes.js`
-
-Does this look right? (Y/n) _
-```
-
-#### Adding boilerplate types and error handlers to a CLI
-
-```bash
-$ c7 record submodule --subfunction=config --MatchCase=false
-Watching for changes... (Press any key to end the recording.)
-Stopped recording!
-
-Calculating diffs...
-
-CHANGES:
-[ADDED]       `src/${subfunction}/functions.js`
-[ADDED]       `src/${subfunction}/errors.js`
-[ADDED]       `src/${subfunction}/types.js`
-[ADDED]       `src/${subfunction}/test.js`
-
-Does this look right? (Y/n) _
-```
-
-## `c7` configuration parameters
-
-These can be configured either in `c7.json` or when running commands.
+These can be configured either in `c7.json` or as params when running commands.
 
 |Param|Type|Default|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |-----|-----|-----|-----|
-|`MatchCase`|Boolean|`true`|Determines whether to match the case of custom parameters. If false, will match any variant of every custom parameter in paths, new files, and modified files.|
-|`MatchPath`|Boolean|`true`|Determines whether to match paths of created and modified files. If false, will always use the absolute path.|
+|`MatchCase`|Boolean|`true`|Determines whether to match the case of parameters. If false, will match lowercase, uppercase, and capitalcase variants of every custom parameter in paths, new files, and modified files.|
+|`MatchPath`|Boolean|`true`|Determines whether to match paths of created and modified files. If false, will never try to change the path.|
 |`AllowVars`|Boolean|`false`|Determines whether parameters can be passed as variables to other parameters. For example, if true, passing `--name=Param1 --test=[name]00` would set `name` to be `Param1` and `test` to be `Param100`.|
 
 More to come soon!
 
-## What's next?
+## What's the roadmap?
 
-Here's a list of planned and existing features:
+In the interest of full disclosure, here's a list of all planned and existing features, along with their status.
 
-|Feature|Description|Progress|
-|-----|-----|-----|
-|**Core**|Create directories and files from config files. Edit existing files based on text position.|![live](https://img.shields.io/badge/-LIVE-green)|
-|**Record**|Record component creation to autogenerate config files.|![in-progress](https://img.shields.io/badge/-IN%20PROGRESS-yellow)|
-|**AST parsing**|Use AST diffs for more relevant edits to files.|![todo](https://img.shields.io/badge/-TODO-red)|
-|**Starter packs**|Support for community contributed packs that define preexisting reusable code (for example React components).|![todo](https://img.shields.io/badge/-TODO-red)|
-|**Plugin support**|Community plugin support to enhance functionality (for example custom AST parsers).|![todo](https://img.shields.io/badge/-TODO-red)|
-|**Dependency management**|Allow managing starter packs and plugins in `c7.json` and installing them.|![todo](https://img.shields.io/badge/-TODO-red)|
+- ### Add ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+  - #### Create ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+    - ##### Create directories ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Create files ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Ensure no overwrite ![todo](https://img.shields.io/badge/-TODO-red)
+  - #### Modify ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+    - ##### Modify files using line position ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+      - ###### Insert chunks at position ![live](https://img.shields.io/badge/-LIVE-green)
+      - ###### Update chunk position on insert ![live](https://img.shields.io/badge/-LIVE-green)
+      - ###### Detect external changes to file (`lastHash`, `lastContents`) ![todo](https://img.shields.io/badge/-TODO-red)
+      - ###### Add naive, diff, prefix, skip resolutions ![todo](https://img.shields.io/badge/-TODO-red)
+    - ##### Modify files using AST ![todo](https://img.shields.io/badge/-TODO-red)
+- ### Record ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+  - #### New ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+    - ##### New directories ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### New files ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Use user-friendly templates ![todo](https://img.shields.io/badge/-TODO-red)
+  - #### Modified ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+    - ##### Modified directories ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Modified files ![todo](https://img.shields.io/badge/-TODO-red)
+- ### Starter packs ![todo](https://img.shields.io/badge/-TODO-red)
+  - #### Allow modify if not exist (`ifEmpty`) ![todo](https://img.shields.io/badge/-TODO-red)
+- ### Plugins ![todo](https://img.shields.io/badge/-TODO-red)
+  - #### Refactor and extract core to plugin ![todo](https://img.shields.io/badge/-TODO-red)
+- ### Dependency management ![todo](https://img.shields.io/badge/-TODO-red)
 
-If you have any suggestions or bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
+If you would like to see a feature not listed here, or if you notice any bugs, drop them in our [Issues](https://github.com/svasandani/c7/issues) page!
 
 ## Contributing
 

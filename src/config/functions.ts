@@ -21,8 +21,6 @@ const sanitizeConfig = (data: IConfig): IConfig => {
     options: defaultOptions,
   };
 
-  if (!("version" in data))
-    throw new ConfigError("no version specified in config");
   Object.keys(data?.options || {}).forEach((option) => {
     if (!isValidOption(option))
       throw new ConfigError(`unrecognized option ${option}`);
