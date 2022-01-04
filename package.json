@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svasandani/c7.git"
+    "url": "git+https://github.com/Vasandani/c7"
   },
   "keywords": [
     "open-source",
@@ -40,9 +40,9 @@
   "author": "Shailesh Vasandani",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/svasandani/c7/issues"
+    "url": "https://github.com/Vasandani/c7/issues"
   },
-  "homepage": "https://github.com/svasandani/c7#readme",
+  "homepage": "https://c7.vasandani.net",
   "devDependencies": {
     "@types/node": "^17.0.5",
     "commitizen": "^4.2.4",
