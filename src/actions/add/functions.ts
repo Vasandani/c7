@@ -226,7 +226,13 @@ const operationActors: {
       try {
         fs.mkdirSync(path.join(transformedPath, ".."), { recursive: true });
       } catch (err: any) {}
-      fs.writeFileSync(transformedPath, transformedData, { flag: "w" });
+      try {
+        fs.writeFileSync(transformedPath, transformedData, { flag: "wx" });
+      } catch (err: any) {
+        throw new ActionError(
+          `file ${transformedPath} exists; will not overwrite!`
+        );
+      }
 
       return transformedPath;
     } catch (err: any) {

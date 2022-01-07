@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
@@ -18,14 +19,16 @@ export const doWith = async (
   process.stdout.write(
     `${chalk.yellow("Reading file system, please wait...")}\r`
   );
-
-  const preTree = new FileTree(
-    process.cwd(),
-    path.join(
-      process.env.C7_ENV === "development" ? process.cwd() : os.tmpdir(),
-      `.c7.pre`
-    )
+  const prePath = path.join(
+    process.env.C7_ENV === "development" ? process.cwd() : os.tmpdir(),
+    `.c7.pre`
   );
+  const postPath = path.join(
+    process.env.C7_ENV === "development" ? process.cwd() : os.tmpdir(),
+    `.c7.post`
+  );
+
+  const preTree = new FileTree(process.cwd(), prePath);
   await preTree.parseFiles();
 
   console.log(
@@ -40,13 +43,7 @@ export const doWith = async (
   await dataFromStdIn();
   console.log(`${chalk.green("Stopped recording!")}`);
 
-  const postTree = new FileTree(
-    process.cwd(),
-    path.join(
-      process.env.C7_ENV === "development" ? process.cwd() : os.tmpdir(),
-      `.c7.post`
-    )
-  );
+  const postTree = new FileTree(process.cwd(), postPath);
   await postTree.parseFiles();
 
   console.log(`${chalk.yellow("Calculating diffs...")}`);
@@ -54,6 +51,9 @@ export const doWith = async (
   const options = collapseOptions(argOptions, config.options);
 
   await diffTreesToConfig(preTree, postTree, params, options);
+
+  await fs.rm(prePath, { recursive: true, force: true });
+  await fs.rm(postPath, { recursive: true, force: true });
 
   process.stdin.pause();
 };

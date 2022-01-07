@@ -22,7 +22,10 @@ export const collapseOptions = (
   return options.reduce(
     (collapsedOptions: IConfigOptions, currentOption: IConfigOptions) => {
       ValidOptions.forEach((option) => {
-        if (!(option in collapsedOptions))
+        if (
+          !(option in collapsedOptions) ||
+          typeof collapsedOptions[option] === "undefined"
+        )
           collapsedOptions[option] = currentOption[option];
       });
       return collapsedOptions;
