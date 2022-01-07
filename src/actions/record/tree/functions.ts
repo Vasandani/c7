@@ -121,7 +121,7 @@ const handleModifiedFile = async (
     if (code === diff.EQUAL) {
       accumulatedPrefix += text;
     } else {
-      const templatePath = `${relativePath}.${++inserts}.c7`;
+      const templatePath = `${relativePath}.${++inserts}`;
       await writeToDataFile(transformers, text, templatePath);
 
       const lines = accumulatedPrefix.split(`\n`);
