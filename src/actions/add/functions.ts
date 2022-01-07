@@ -3,10 +3,11 @@ import fs from "fs";
 import path from "path";
 
 import { ArgsError } from "../../args/errors.js";
+import { ArgsReducerBuilder } from "../../args/functions.js";
 import { IParams } from "../../args/types.js";
 import { ConfigError } from "../../config/errors.js";
-import { defaultOptions } from "../../config/functions.js";
-import { IConfig, isValidOption } from "../../config/types.js";
+import { collapseOptions, defaultOptions } from "../../config/functions.js";
+import { IConfig, IConfigOptions, isValidOption } from "../../config/types.js";
 import { ActionError } from "../errors.js";
 import { conditionallyReplacePath, replaceWithOptions } from "../helpers.js";
 import {
@@ -340,7 +341,11 @@ const doOperation = (
   console.log(`${chalk.yellow(`[${operation.type}]\t"${path}"`)}`);
 };
 
-export const doWith = async (params: IParams, config: IConfig) => {
+export const doWith = async (
+  params: IParams,
+  config: IConfig,
+  argOptions: IConfigOptions
+) => {
   const id = ensureDirExists(params);
 
   console.log(`${chalk.green("Successfully found configuration...")}\n`);
@@ -349,8 +354,30 @@ export const doWith = async (params: IParams, config: IConfig) => {
 
   console.log(`${chalk.yellow("Applying diffs...")}\n`);
 
+  const options = collapseOptions(argOptions, idConfig.options, config.options);
+
+  const transformedOptionValues =
+    idConfig.options.MatchCase === false
+      ? params.optionValues
+          ?.map(([option, value]) => {
+            return [
+              [`${option}.lc`, value.toLocaleLowerCase()],
+              [`${option}.uc`, value.toLocaleUpperCase()],
+              [
+                `${option}.cc`,
+                value.charAt(0).toLocaleUpperCase() +
+                  value.slice(1).toLocaleLowerCase(),
+              ],
+            ];
+          })
+          .flat()
+      : params.optionValues;
+
+  const argsReducer = ArgsReducerBuilder(options);
+  const optionValues = argsReducer(transformedOptionValues || []);
+
   idConfig.operations?.forEach((operation) =>
-    doOperation(operation, idConfig, params.optionValues || [], id)
+    doOperation(operation, idConfig, optionValues, id)
   );
 
   updateConfig(idConfig, id);

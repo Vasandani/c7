@@ -11,5 +11,5 @@ export const isValidOption = (
 };
 
 export interface IConfig {
-  options?: IConfigOptions;
+  options: IConfigOptions;
 }

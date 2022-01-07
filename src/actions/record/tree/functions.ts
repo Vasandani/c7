@@ -8,7 +8,7 @@ import path from "path";
 import { FileType, IFileTree, INode, IParamTransformers } from "./types.js";
 import { IParams } from "../../../args/types.js";
 import { IIdConfig, ModifyOperation } from "../../types.js";
-import { IConfig } from "../../../config/types.js";
+import { IConfig, IConfigOptions } from "../../../config/types.js";
 import { ActionError } from "../../errors.js";
 import { replaceWithOptions } from "../../helpers.js";
 
@@ -41,7 +41,7 @@ const writeToDataFile = async (
 const handleCreatedFile = async (
   node: INode,
   transformers: IParamTransformers,
-  config: IConfig,
+  options: IConfigOptions,
   idConfig: IIdConfig
 ) => {
   const relativePath = path.join(node.pathPrefix, node.identifier);
@@ -51,10 +51,10 @@ const handleCreatedFile = async (
 
   await writeToDataFile(transformers, data, relativePath);
 
-  const transformedPath = config.options?.MatchPath
+  const transformedPath = options.MatchPath
     ? replaceWithOptions(relativePath, transformers.valueToUUID)
     : relativePath;
-  const consolePath = config.options?.MatchPath
+  const consolePath = options.MatchPath
     ? replaceWithOptions(
         relativePath,
         transformers.valueToOption.map(([value, option]) => [
@@ -77,7 +77,7 @@ const handleModifiedFile = async (
   preNode: INode,
   postNode: INode,
   transformers: IParamTransformers,
-  config: IConfig,
+  options: IConfigOptions,
   idConfig: IIdConfig,
   preProjectedDir: string
 ) => {
@@ -91,10 +91,10 @@ const handleModifiedFile = async (
   const postBuf = await fs.readFile(fullPostPath);
   const postData = postBuf.toString();
 
-  const transformedPath = config.options?.MatchPath
+  const transformedPath = options.MatchPath
     ? replaceWithOptions(relativePath, transformers.valueToUUID)
     : relativePath;
-  const consolePath = config.options?.MatchPath
+  const consolePath = options.MatchPath
     ? replaceWithOptions(
         relativePath,
         transformers.valueToOption.map(([value, option]) => [
@@ -146,7 +146,7 @@ const handleModifiedFile = async (
 const recursivelyHandleCreatedNode = async (
   node: INode,
   transformers: IParamTransformers,
-  config: IConfig,
+  options: IConfigOptions,
   idConfig: IIdConfig
 ) => {
   if (node.type === "DIR") {
@@ -154,12 +154,12 @@ const recursivelyHandleCreatedNode = async (
       await recursivelyHandleCreatedNode(
         subNode,
         transformers,
-        config,
+        options,
         idConfig
       );
     }
   } else {
-    await handleCreatedFile(node, transformers, config, idConfig);
+    await handleCreatedFile(node, transformers, options, idConfig);
   }
 };
 
@@ -167,7 +167,7 @@ const recursivelyHandleModifiedNode = async (
   preNode: INode,
   postNode: INode,
   transformers: IParamTransformers,
-  config: IConfig,
+  options: IConfigOptions,
   idConfig: IIdConfig,
   preProjectedDir: string
 ) => {
@@ -186,7 +186,7 @@ const recursivelyHandleModifiedNode = async (
             existingNode,
             subPostNode,
             transformers,
-            config,
+            options,
             idConfig,
             preProjectedDir
           );
@@ -195,7 +195,7 @@ const recursivelyHandleModifiedNode = async (
         await recursivelyHandleCreatedNode(
           subPostNode,
           transformers,
-          config,
+          options,
           idConfig
         );
       }
@@ -205,7 +205,7 @@ const recursivelyHandleModifiedNode = async (
       preNode,
       postNode,
       transformers,
-      config,
+      options,
       idConfig,
       preProjectedDir
     );
@@ -216,7 +216,7 @@ export const diffTreesToConfig = async (
   preTree: FileTree,
   postTree: FileTree,
   params: IParams,
-  config: IConfig
+  options: IConfigOptions
 ) => {
   if (typeof params.id === "undefined") {
     throw new ActionError(
@@ -239,7 +239,23 @@ export const diffTreesToConfig = async (
     uuidToOption: [],
     valueToOption: [],
   };
-  params.optionValues?.forEach(([option, value]) => {
+  const transformedOptionValues =
+    options.MatchCase === false
+      ? params.optionValues
+          ?.map(([option, value]) => {
+            return [
+              [`${option}.lc`, value.toLocaleLowerCase()],
+              [`${option}.uc`, value.toLocaleUpperCase()],
+              [
+                `${option}.cc`,
+                value.charAt(0).toLocaleUpperCase() +
+                  value.slice(1).toLocaleLowerCase(),
+              ],
+            ];
+          })
+          .flat()
+      : params.optionValues;
+  transformedOptionValues?.forEach(([option, value]) => {
     const uuid = randomUUID();
     transfomers.valueToUUID.push([value, uuid]);
     transfomers.uuidToOption.push([uuid, option]);
@@ -248,7 +264,7 @@ export const diffTreesToConfig = async (
 
   const idConfig: IIdConfig = {
     id: params.id,
-    options: config.options,
+    options,
     operations: [],
     params: transfomers.uuidToOption,
   };
@@ -257,7 +273,7 @@ export const diffTreesToConfig = async (
     preTree.rootNode,
     postTree.rootNode,
     transfomers,
-    config,
+    options,
     idConfig,
     preTree.rootProjectedDir
   );

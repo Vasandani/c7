@@ -18,11 +18,11 @@ const run = async () => {
     _("Parsed config!");
 
     _("Parsing args...");
-    const params = parseArgs(config, process.argv);
+    const { params, argOptions } = parseArgs(config, process.argv);
     _("Parsed args!");
 
     const generatedAction = new Action(params.action);
-    await generatedAction.doWith(params, config);
+    await generatedAction.doWith(params, config, argOptions);
   } catch (err: any) {
     if (err instanceof ConfigError) {
       handleConfigError(err);

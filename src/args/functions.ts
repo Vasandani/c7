@@ -1,6 +1,39 @@
-import { IConfig, IConfigOptions } from "../config/types.js";
+import { collapseOptions } from "../config/functions.js";
+import {
+  IConfig,
+  IConfigOptions,
+  isValidOption,
+  ValidOption,
+} from "../config/types.js";
 import { ArgsError } from "./errors.js";
 import { IParams, isValidAction, ValidAction, ValidActions } from "./types.js";
+
+export const extractOptionsFromArgs = (
+  args: string[],
+  argOptions: IConfigOptions
+) => {
+  const parsedArgs: string[][] = [];
+
+  args.forEach((arg) => {
+    checkDoubleDash(arg);
+
+    const mappedArg = arg.slice(2).split("=");
+    if (mappedArg.length !== 2)
+      throw new ArgsError(`unexpected argument ${arg}`);
+
+    if (mappedArg[0].charAt(0) === mappedArg[0].charAt(0).toLocaleUpperCase()) {
+      if (!isValidOption(mappedArg[0]))
+        throw new ArgsError(`reserved param ${mappedArg[0]}`);
+
+      argOptions[mappedArg[0] as ValidOption] =
+        mappedArg[1].toLocaleLowerCase() === "true";
+    } else {
+      parsedArgs.push(mappedArg);
+    }
+  });
+
+  return { parsedArgs, argOptions };
+};
 
 const checkDoubleDash = (arg: string) => {
   if (arg.slice(0, 2) !== "--") {
@@ -8,20 +41,15 @@ const checkDoubleDash = (arg: string) => {
   }
 };
 
-const ArgsReducerBuilder = (options: IConfigOptions | undefined) => {
-  const AllowVars = options?.AllowVars || false;
-
-  return (args: string[]): string[][] => {
+export const ArgsReducerBuilder = (options: IConfigOptions) => {
+  return (args: string[][]): string[][] => {
     const optionValueMap = new Map();
 
-    return args.reduce((map: string[][], curr: string): string[][] => {
-      checkDoubleDash(curr);
+    return args.reduce((map: string[][], curr: string[]): string[][] => {
+      optionValueMap.set(curr[0], curr[1]);
 
-      const mappedArg = curr.slice(2).split("=");
-      optionValueMap.set(mappedArg[0], mappedArg[1]);
-
-      if (AllowVars) {
-        let value = mappedArg[1];
+      if (options.AllowVars) {
+        let value = curr[1];
         let openBracket = value.indexOf("[");
         let closedBracket = value.indexOf("]", openBracket);
 
@@ -39,16 +67,19 @@ const ArgsReducerBuilder = (options: IConfigOptions | undefined) => {
           closedBracket = value.indexOf("]", openBracket);
         }
 
-        mappedArg[1] = value;
+        curr[1] = value;
       }
 
-      map.push(mappedArg);
+      map.push(curr);
       return map;
     }, []);
   };
 };
 
-export const parseArgs = (config: IConfig, argv: string[]): IParams => {
+export const parseArgs = (
+  config: IConfig,
+  argv: string[]
+): { params: IParams; argOptions: IConfigOptions } => {
   const args = argv.slice(2);
 
   if (args.length === 0) {
@@ -75,10 +106,15 @@ export const parseArgs = (config: IConfig, argv: string[]): IParams => {
     args.shift();
   }
 
-  checkDoubleDash(args[0]);
+  const { parsedArgs, argOptions } = extractOptionsFromArgs(
+    args,
+    {} as IConfigOptions
+  );
 
-  const argsReducer = ArgsReducerBuilder(config?.options);
-  params.optionValues = argsReducer(args);
+  const options = collapseOptions(argOptions, config.options);
 
-  return params;
+  const argsReducer = ArgsReducerBuilder(options);
+  params.optionValues = argsReducer(parsedArgs);
+
+  return { params, argOptions };
 };

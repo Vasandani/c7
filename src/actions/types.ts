@@ -42,7 +42,7 @@ export const isValidModifyOperation = (
 
 export interface IIdConfig {
   id: string;
-  options?: IConfigOptions;
+  options: IConfigOptions;
   params?: string[][];
   operations?: Array<Operation>;
 }

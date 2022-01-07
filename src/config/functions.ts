@@ -16,6 +16,21 @@ export const defaultOptions: IConfigOptions = {
   AllowVars: true,
 };
 
+export const collapseOptions = (
+  ...options: IConfigOptions[]
+): IConfigOptions => {
+  return options.reduce(
+    (collapsedOptions: IConfigOptions, currentOption: IConfigOptions) => {
+      ValidOptions.forEach((option) => {
+        if (!(option in collapsedOptions))
+          collapsedOptions[option] = currentOption[option];
+      });
+      return collapsedOptions;
+    },
+    {} as IConfigOptions
+  );
+};
+
 const sanitizeConfig = (data: IConfig): IConfig => {
   const config: IConfig = {
     options: defaultOptions,

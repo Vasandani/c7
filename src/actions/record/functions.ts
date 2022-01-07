@@ -3,13 +3,18 @@ import os from "os";
 import path from "path";
 
 import { IParams } from "../../args/types.js";
-import { IConfig } from "../../config/types.js";
+import { collapseOptions } from "../../config/functions.js";
+import { IConfig, IConfigOptions } from "../../config/types.js";
 import { diffTreesToConfig, FileTree } from "./tree/functions.js";
 
 const dataFromStdIn = () =>
   new Promise((resolve) => process.stdin.once("data", resolve));
 
-export const doWith = async (params: IParams, config: IConfig) => {
+export const doWith = async (
+  params: IParams,
+  config: IConfig,
+  argOptions: IConfigOptions
+) => {
   process.stdout.write(
     `${chalk.yellow("Reading file system, please wait...")}\r`
   );
@@ -46,7 +51,9 @@ export const doWith = async (params: IParams, config: IConfig) => {
 
   console.log(`${chalk.yellow("Calculating diffs...")}`);
 
-  await diffTreesToConfig(preTree, postTree, params, config);
+  const options = collapseOptions(argOptions, config.options);
+
+  await diffTreesToConfig(preTree, postTree, params, options);
 
   process.stdin.pause();
 };
