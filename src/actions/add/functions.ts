@@ -91,6 +91,14 @@ const operationSanitizers: {
       });
     }
 
+    if (operation.ifEmpty) {
+      const sanitizedIfEmpty = operationSanitizers[operation.ifEmpty.type](
+        operation.ifEmpty
+      );
+
+      sanitizedOperation.ifEmpty = sanitizedIfEmpty;
+    }
+
     return sanitizedOperation;
   },
 };
@@ -229,9 +237,7 @@ const operationActors: {
       try {
         fs.writeFileSync(transformedPath, transformedData, { flag: "wx" });
       } catch (err: any) {
-        throw new ActionError(
-          `file ${transformedPath} exists; will not overwrite!`
-        );
+        return `Skipped! ${transformedPath} already exists...`;
       }
 
       return transformedPath;
@@ -258,6 +264,21 @@ const operationActors: {
         config,
         optionValues
       );
+
+      if (!fs.existsSync(transformedPath)) {
+        if (!operation.ifEmpty)
+          throw new ActionError(
+            `file ${transformedPath} does not exist and no fallback is specified!`
+          );
+
+        return operationActors[operation.ifEmpty.type](
+          operation.ifEmpty,
+          config,
+          optionValues,
+          id
+        );
+      }
+
       const fileBuf = fs.readFileSync(transformedPath);
       const fileData = fileBuf.toString();
 

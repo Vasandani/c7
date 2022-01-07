@@ -33,6 +33,7 @@ export interface ModifyOperation {
     };
     template: string;
   }>;
+  ifEmpty?: Operation;
 }
 export const isValidModifyOperation = (
   operation: Operation

@@ -104,10 +104,17 @@ const handleModifiedFile = async (
       )
     : relativePath;
 
+  await writeToDataFile(transformers, postData, relativePath);
+
   const modifyOperation: ModifyOperation = {
     type: "MODIFY",
     path: transformedPath,
     inserts: [],
+    ifEmpty: {
+      type: "CREATE",
+      path: transformedPath,
+      template: relativePath,
+    },
   };
 
   const chunks = diff(preData, postData);
