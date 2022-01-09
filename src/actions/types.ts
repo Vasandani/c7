@@ -64,3 +64,7 @@ export interface ICases {
   kebabcase: any;
   snakecase: any;
 }
+
+export interface ISnackPackConfig {
+  ids: string[];
+}

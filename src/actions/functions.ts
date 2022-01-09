@@ -1,7 +1,7 @@
-import chalk from "chalk";
 import { IParams, ValidAction, ValidActions } from "../args/types.js";
 import { IConfig, IConfigOptions } from "../config/types.js";
 import * as add from "./add/functions.js";
+import * as install from "./install/functions.js";
 import * as record from "./record/functions.js";
 import { IAction } from "./types.js";
 
@@ -36,5 +36,13 @@ export class Action implements IAction {
 
   async addWith(params: IParams, config: IConfig, argOptions: IConfigOptions) {
     await add.doWith(params, config, argOptions);
+  }
+
+  async installWith(
+    params: IParams,
+    config: IConfig,
+    argOptions: IConfigOptions
+  ) {
+    await install.doWith(params, config, argOptions);
   }
 }

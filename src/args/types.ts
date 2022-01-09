@@ -1,4 +1,4 @@
-export const ValidActions = ["record", "add"] as const;
+export const ValidActions = ["record", "add", "install"] as const;
 export type ValidAction = typeof ValidActions[number];
 
 export const isValidAction = (action: string): action is ValidAction => {
@@ -7,6 +7,6 @@ export const isValidAction = (action: string): action is ValidAction => {
 
 export interface IParams {
   action: ValidAction;
-  id?: string;
+  id: string;
   optionValues?: string[][];
 }

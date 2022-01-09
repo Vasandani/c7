@@ -11,7 +11,7 @@ import {
 } from "./types.js";
 
 export const defaultOptions: IConfigOptions = {
-  MatchCase: true,
+  MatchCase: false,
   MatchPath: true,
   AllowVars: true,
 };

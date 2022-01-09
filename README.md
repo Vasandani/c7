@@ -17,7 +17,7 @@
 
 Why `c7`? It's an easy way to standardize component generation. Maybe you've already scripted a macro to do this, but your team and other people contributing to your repo won't have access to it. Make it easier for everyone—contributors, maintainers, you.
 
-Plus, with starter packs (coming soon), you can easily bootstrap your project with best practices for anything the community supports, in any language: hooks in React, handlers in Express, goroutines in Go, routes in Rust, and more. If the community doesn't have a starter pack, you can even make your own!
+Plus, with snack packs, you can easily bootstrap your project with best practices for anything the community supports, in any language: [components in React](https://github.com/Vasandani/react-snack-pack), handlers in Express, goroutines in Go, routes in Rust, and more. If the community doesn't have a starter pack, you can even make your own!
 
 <br />
 
@@ -89,7 +89,7 @@ Sure! Whatever works best for you works best for you, and if that's not `c7`, we
 The key advantages of `c7` are that:
 - since configurations can be committed, everyone in your team can generate things the same way
 - it's not opinionated at all—create components however you want
-- if you do want to do things the idiomatic way, you can with starter packs (coming soon!)
+- if you do want to do things the idiomatic way, you can with starter packs
 - super simple configuration—just record file creation, and `c7` does the rest
 
 ### How does modifying files work?
@@ -134,11 +134,11 @@ In the interest of full disclosure, here's a list of all planned and existing fe
   - #### Modified ![live](https://img.shields.io/badge/-LIVE-green)
     - ##### Modified directories ![live](https://img.shields.io/badge/-LIVE-green)
     - ##### Modified files ![live](https://img.shields.io/badge/-LIVE-green)
-- ### Starter packs ![incomplete](https://img.shields.io/badge/-INCOMPLETE-orange)
+- ### Starter packs ![live](https://img.shields.io/badge/-LIVE-green)
   - #### Allow modify if not exist (`ifEmpty`) ![live](https://img.shields.io/badge/-LIVE-green)
-  - #### Install from git ![todo](https://img.shields.io/badge/-TODO-red)
-    - ##### Verify repository exists ![todo](https://img.shields.io/badge/-TODO-red)
-    - ##### Recursively fetch data ![todo](https://img.shields.io/badge/-TODO-red)
+  - #### Install from git ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Verify repository exists ![live](https://img.shields.io/badge/-LIVE-green)
+    - ##### Recursively fetch data ![live](https://img.shields.io/badge/-LIVE-green)
 - ### Plugins ![todo](https://img.shields.io/badge/-TODO-red)
   - #### Refactor and extract core to plugin ![todo](https://img.shields.io/badge/-TODO-red)
 - ### Dependency management ![todo](https://img.shields.io/badge/-TODO-red)
