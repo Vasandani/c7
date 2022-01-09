@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/Vasandani/c7/compare/v2.0.3...v2.1.0) (2022-01-09)
+
+
+### Features
+
+* **actions:** add fallback option for modify operation ([c4701d3](https://github.com/Vasandani/c7/commit/c4701d311e3d2ee1d8b2e977787ad699c08ca6cd))
+* **actions:** improve MatchCase dynamic matching ([8a39ae6](https://github.com/Vasandani/c7/commit/8a39ae6086ff61bef4597eda895c9b2759f8b608))
+* add full option support ([abdbb84](https://github.com/Vasandani/c7/commit/abdbb8429c888ec67e96ba2cba75595f38e1480b))
+* add support for external snack packs ([e504994](https://github.com/Vasandani/c7/commit/e50499440b60ba586ccdbffb4cf4ca5fafb3260a))
+
+
+### Bug Fixes
+
+* **record:** remove extra .c7 suffix ([ba918a2](https://github.com/Vasandani/c7/commit/ba918a26950cc15a19a5684df757228a5af413d2))
+* resolve undefined options when collapsing ([3d85c28](https://github.com/Vasandani/c7/commit/3d85c285334f8c5c619697ece011d6b7680389c0))
+
 ### [2.0.3](https://github.com/svasandani/c7/compare/v2.0.2...v2.0.3) (2022-01-04)
 
 ### [2.0.2](https://github.com/svasandani/c7/compare/v2.0.1...v2.0.2) (2022-01-04)
