@@ -32,6 +32,7 @@ const run = async () => {
       handleActionError(err);
     } else {
       console.log("I'm sensing an anomaly in the force...");
+      if (process.env.C7_ENV === "development") console.log(err.message);
     }
   }
 };

@@ -21,6 +21,12 @@ export const extractOptionsFromArgs = (
     if (mappedArg.length !== 2)
       throw new ArgsError(`unexpected argument ${arg}`);
 
+    if (mappedArg[0].length === 0)
+      throw new ArgsError(`missing param name in arg ${arg}`);
+
+    if (mappedArg[1].length === 0)
+      throw new ArgsError(`missing value in arg ${arg}`);
+
     if (mappedArg[0].charAt(0) === mappedArg[0].charAt(0).toLocaleUpperCase()) {
       if (!isValidOption(mappedArg[0]))
         throw new ArgsError(`reserved param ${mappedArg[0]}`);

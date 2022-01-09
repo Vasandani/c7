@@ -9,8 +9,13 @@ import { ConfigError } from "../../config/errors.js";
 import { collapseOptions, defaultOptions } from "../../config/functions.js";
 import { IConfig, IConfigOptions, isValidOption } from "../../config/types.js";
 import { ActionError } from "../errors.js";
-import { conditionallyReplacePath, replaceWithOptions } from "../helpers.js";
 import {
+  conditionallyReplacePath,
+  generateCases,
+  replaceWithOptions,
+} from "../helpers.js";
+import {
+  ICases,
   IIdConfig,
   isValidCreateOperation,
   isValidModifyOperation,
@@ -387,15 +392,12 @@ export const doWith = async (
     idConfig.options.MatchCase === false
       ? params.optionValues
           ?.map(([option, value]) => {
-            return [
-              [`${option}.lc`, value.toLocaleLowerCase()],
-              [`${option}.uc`, value.toLocaleUpperCase()],
-              [
-                `${option}.cc`,
-                value.charAt(0).toLocaleUpperCase() +
-                  value.slice(1).toLocaleLowerCase(),
-              ],
-            ];
+            const cases = generateCases(value);
+
+            return Object.keys(cases).map((caseName) => [
+              `${option}.${caseName}`,
+              cases[caseName as keyof ICases],
+            ]);
           })
           .flat()
       : params.optionValues;

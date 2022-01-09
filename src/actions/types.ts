@@ -47,3 +47,20 @@ export interface IIdConfig {
   params?: string[][];
   operations?: Array<Operation>;
 }
+
+export interface IDelimiters {
+  space: any;
+  dash: any;
+  capital: any;
+  none: any;
+}
+
+export interface ICases {
+  uppercase: any;
+  lowercase: any;
+  capitalcase: any;
+  pascalcase: any;
+  camelcase: any;
+  kebabcase: any;
+  snakecase: any;
+}

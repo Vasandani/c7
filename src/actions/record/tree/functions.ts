@@ -7,10 +7,10 @@ import path from "path";
 
 import { FileType, IFileTree, INode, IParamTransformers } from "./types.js";
 import { IParams } from "../../../args/types.js";
-import { IIdConfig, ModifyOperation } from "../../types.js";
+import { ICases, IIdConfig, ModifyOperation } from "../../types.js";
 import { IConfig, IConfigOptions } from "../../../config/types.js";
 import { ActionError } from "../../errors.js";
-import { replaceWithOptions } from "../../helpers.js";
+import { generateCases, replaceWithOptions } from "../../helpers.js";
 
 const makeFileWithParentDir = async (filePath: string, data: string) => {
   try {
@@ -250,15 +250,12 @@ export const diffTreesToConfig = async (
     options.MatchCase === false
       ? params.optionValues
           ?.map(([option, value]) => {
-            return [
-              [`${option}.lc`, value.toLocaleLowerCase()],
-              [`${option}.uc`, value.toLocaleUpperCase()],
-              [
-                `${option}.cc`,
-                value.charAt(0).toLocaleUpperCase() +
-                  value.slice(1).toLocaleLowerCase(),
-              ],
-            ];
+            const cases = generateCases(value);
+
+            return Object.keys(cases).map((caseName) => [
+              `${option}.${caseName}`,
+              cases[caseName as keyof ICases],
+            ]);
           })
           .flat()
       : params.optionValues;
